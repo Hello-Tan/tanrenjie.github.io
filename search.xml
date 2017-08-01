@@ -5,7 +5,7 @@
     <url>%2F2017%2F07%2F14%2F%E5%B7%A7%E7%94%A8padding-margin%E5%AE%9E%E7%8E%B0%E7%A9%BA%E9%97%B4%E5%8D%A0%E4%BD%8D%2F</url>
     <content type="text"><![CDATA[近期在开发移动端项目遇到一个问题，当网页加载时页面会有闪烁效果，原因是因为图片容器没有定宽高，所以在加载图片时始终有一个短暂的闪烁效果，那么如何解决这个问题？ 一个基础却又容易混淆的css知识点： 当margin/padding取形式为百分比的值时，无论是left/right，还是top/bottom，都是以父元素的width为参照物的！ 也许你会说，left/right以父元素的width为参照物好理解，但是top/bottom为什么也是以父元素的width为参照物的呢？网上众说纷纭，关键还是看W3C的规范： Note that in a horizontal flow, percentages on ‘margin-top’ and ‘margin-bottom’ are relative to the width of the containing block, not the height (and in vertical flow, ‘margin-left’ and ‘margin-right’ are relative to the height, not the width). Note that percentages on ‘padding-top’ and ‘padding-bottom’ are relative to the width of the containing block, not the height (at least in a horizontal flow; in a vertical flow they are relative to the height). 那根据这个特性，想让图片的高度与屏幕宽度相等，则可以用：margin-top：100% 或padding-top：100% 来让容器预先占位，完美解决图片加载闪烁bug,而且可以通过修改百分比值来达到修改图片宽高比显示。 那这就完了吗？ 并没有，此方案的缺陷是无法给容器设置max-height属性，因为容器的高度是通过padding撑起来，而实际高度为0，所以max-height无效。 那想要优化这一点，唯一的方法就是利用内容高度来撑开而非padding，这个方案跟消除浮动所用的方案非常相似：给容器添加一个子元素/伪元素，并把子元素/伪元素的margin-top / padding-top设为100%，使其实际高度相当于容器的宽度，如此一来，便能把容器的高度撑至与宽度一致了。由于添加子元素与HTML语义化相悖，因此更推荐使用伪元素(:after)来实现此方案。 那如果占位不是图片，而且有子元素在内部怎么办？ 答案很简单，那就是利用position: absolute;]]></content>
       <categories>
-        <category>不为人知的css秘籍</category>
+        <category>不为人知的CSS魔法</category>
       </categories>
       <tags>
         <tag>css</tag>
